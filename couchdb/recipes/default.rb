@@ -32,6 +32,13 @@ when "redhat","centos","fedora","amazon"
     home "/var/lib/couchdb"
     system true
   end
+when "suse"
+  zypp_repository "python" do
+    repo_name "python"
+    description "devel:languages:python"
+    url "http://download.opensuse.org/repositories/devel:/languages:/python/openSUSE_#{node[:platform_version]}"
+    action :add
+  end
 end
 
 package "couchdb" do
@@ -55,7 +62,7 @@ directory "/var/lib/couchdb" do
 end
 
 service "couchdb" do
-  if platform?("centos","redhat","fedora")
+  if platform?("centos","redhat","fedora","suse")
     start_command "/sbin/service couchdb start &> /dev/null"
     stop_command "/sbin/service couchdb stop &> /dev/null"
   end

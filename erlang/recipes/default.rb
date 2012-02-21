@@ -34,6 +34,15 @@ when "redhat", "centos", "scientific"
     only_if { node[:platform_version].to_f >= 5.0 && node[:platform_version].to_f < 6.0 }
   end
   package "erlang"
+when "suse"
+  include_recipe "zypp"
+  zypp_repository "erlang" do
+    repo_name "Erlang"
+    description "devel:languages:erlang"
+    url "http://download.opensuse.org/repositories/devel:/languages:/erlang/openSUSE_#{node[:platform_version]}"
+    action :add
+  end
+  package "erlang"
 else
   package "erlang"
 end
